@@ -1,0 +1,19 @@
+/ - @videos_per_category.each do |category, video_array|
+/   %article.video_category
+/     %header
+/       %h3= link_to category
+/     .videos.row
+/       - video_array.each do |video|
+/         .video.col-sm-2
+/           = link_to "#{video_path(video.id)}", nil do
+/             %img(src="#{video.small_cover_url}")
+
+- @categories.each do |category|
+  %article.video_category
+    %header
+      %h3= link_to category.label, category
+    .videos.row
+      - category.videos.each do |video|
+        .video.col-sm-2
+          = link_to "#{video_path(video.id)}", nil do
+            %img(src="#{video.small_cover_url}")
