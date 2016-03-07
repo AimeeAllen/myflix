@@ -16,3 +16,7 @@
 
 # Ignore the database.yml file
 config/database.yml
+
+# Ignore RVM files
+.ruby-gemset*
+.ruby-version*
