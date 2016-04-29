@@ -1,0 +1,9 @@
+/this top line is giving a pretty class to the whole view
+%article.video_category
+  %header
+    %h3= "Search Results for \"#{params[:search_term]}\""
+  .videos.row
+    - @videos.each do |video|
+      .video.col-sm-2
+        = link_to video, nil do
+          %img(src="#{video.small_cover_url}")
