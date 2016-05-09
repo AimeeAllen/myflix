@@ -1,0 +1,14 @@
+%section.register.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      / Remember: form_for requires = not - from Rails 4 onwards
+      = bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-6") do |f|
+        %header
+          %h1
+            = @user.new_record? ? 'Register' : 'Update Details'
+        %fieldset
+          = f.text_field :fullname, label: "Full Name"
+          = f.email_field :email, label: "Email Address"
+          = f.password_field :password
+        %fieldset.col-sm-offset-2
+          = f.submit "#{@user.new_record? ? 'Sign Up' : 'Update'}"
