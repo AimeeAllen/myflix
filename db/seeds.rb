@@ -10,7 +10,7 @@ categories = Category.create([{label: 'TV Commedies'},
   {label: 'TV Dramas'},
   {label: 'Reality TV'}])
 
-Video.create([{title: 'Family Guy', description: 'Adult cartoon',
+videos = Video.create([{title: 'Family Guy', description: 'Adult cartoon',
     small_cover_url: '/tmp/family_guy.jpg', large_cover_url: '/tmp/family_guy.jpg',
     category: Category.find_by({label: 'TV Commedies'})},
   {title: 'Futurama', description: 'Pizza boy Philip J. Fry awakens in the 31st century ' +
@@ -25,5 +25,12 @@ Video.create([{title: 'Family Guy', description: 'Adult cartoon',
   {title: 'South Park', description: 'Potty humour cartoon',
     small_cover_url: '/tmp/south_park.jpg', large_cover_url: '/tmp/south_park.jpg',
     category: Category.find_by({label: 'TV Commedies'})}])
+
+users = User.create([{fullname: "User1", email: "user1@email.com", password: "test"},
+    {fullname: "User2", email: "user2@email.com", password: "test"}])
+
+reviews = Review.create([{comment: "This is a good show", rating: "4", user: users[0], video: videos[1]},
+    {comment: "This is a bad show", rating: "1", user: users[1], video: videos[1]},
+    {comment: "This is a good show", rating: "4", user: users[1], video: videos[3]}])
 
 
