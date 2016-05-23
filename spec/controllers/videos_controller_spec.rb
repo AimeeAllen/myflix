@@ -16,6 +16,10 @@ describe VideosController  do
         3.times {reviews.push Fabricate(:review, video: video, user: User.first)}
         expect(assigns(:reviews)).to match_array(reviews)
       end
+      it "sets the @review variable" do
+        expect(assigns(:review)).to be_new_record
+        expect(assigns(:review)).to be_instance_of(Review)
+      end
     end
     it "redirects to login page if user is not authenticated" do
       get :show, id: video.id

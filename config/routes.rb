@@ -9,6 +9,7 @@ Myflix::Application.routes.draw do
   get '/logout', to: 'sessions#destroy'
 
   resources :videos, only: [:show] do
+    resources :reviews, only: [:create]
     collection do
       get :search
     end

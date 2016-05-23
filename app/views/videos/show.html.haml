@@ -15,6 +15,19 @@
 %section.reviews.container
   .row
     .col-sm-10.col-sm-offset-1
+      = bootstrap_form_for([@video, @review]) do |f|
+        %fieldset
+          .form-group
+            .row
+              .col-sm-3
+                = f.select :rating, (1..5).to_a.reverse.map {|e| ["#{e} #{'Star'.pluralize(e)}",e]}, label: "Rate this video"
+          .form-group
+            .row
+              .col-sm-8
+                = f.text_area :comment, label: "Write Review", rows: 6
+          = f.submit "Submit", class: "btn"
+          &nbsp
+          %a(href="") Cancel
       %header
         %h3
           = "User Reviews (#{@video.reviews.count})"

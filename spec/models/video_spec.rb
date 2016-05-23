@@ -78,8 +78,8 @@ describe Video do
     it "calculates average of all ratings to 1 d.p." do
       user = Fabricate(:user)
       videos = []
-      5.times {videos.push (Fabricate(:review, video: video, user: user))}
-      expect(video.average_rating).to eq((videos.map {|v| v.rating}).reduce(:+).to_f/videos.size)
+      45.times {videos.push (Fabricate(:review, video: video, user: user))}
+      expect(video.average_rating).to eq(((videos.map {|v| v.rating}).reduce(:+).to_f/videos.size).round(1))
     end
     it "returns 0 if there are no ratings" do
       expect(video.average_rating).to eq(0)
