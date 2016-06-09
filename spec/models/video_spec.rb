@@ -27,6 +27,8 @@ describe Video do
   # end
 
   it {should have_many(:reviews)}
+  it {should have_many(:queue_items)}
+  it {should have_many(:users).through(:queue_items)}
 
   describe ".search_by_title" do
     # before(:each) do

@@ -1,3 +1,3 @@
 Fabricator(:category) do
-  label (Faker::Lorem.word)  
+  label {Faker::Lorem.word}
 end

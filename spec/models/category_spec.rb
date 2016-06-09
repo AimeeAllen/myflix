@@ -9,6 +9,7 @@ describe Category do
   # end
 
   it {should have_many(:videos)}
+  it {should validate_presence_of(:label)}
   # it "has many Videos" do
   #   educational = Category.create(label: "Educational")
   #   tealeaf = Video.create(title: "Tealeaf course", description: "Rails training", category: educational)
