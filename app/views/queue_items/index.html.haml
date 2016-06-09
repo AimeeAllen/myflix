@@ -18,7 +18,8 @@
               - @queue_items.each do |item|
                 %tr
                   %td
-                    %input.form-control(type="text" value="1")
+                    /%input.form-control(type="text" value="1")
+                    = item.order
                   %td
                     = link_to item.video.title, item.video
                   %td

@@ -33,4 +33,44 @@ describe QueueItemsController do
       expect(response).to redirect_to(:login)
     end
   end
+
+  describe "POST create" do
+    context "authenticated user" do
+      let(:logged_in_user) {Fabricate(:user)}
+      let(:video) {Fabricate(:video)}
+      before do
+        session[:user_id] = logged_in_user.id
+      end
+      it "saves a new queue_item" do
+        post :create, video_id: video.id
+        expect(QueueItem.count).to eq(1)
+      end
+      it "has the new queue item attached to the current user" do
+        post :create, video_id: video.id
+        expect(QueueItem.first.user_id).to eq(logged_in_user.id)
+      end
+      it "has the new queue item attached to the video the user was looking at" do
+        post :create, video_id: video.id
+        expect(QueueItem.first.video_id).to eq(video.id)
+      end
+      it "assigns an order to be the last number in the queue" do
+        2.times {Fabricate(:queue_item, user: logged_in_user)}
+        post :create, video_id: video.id
+        expect(QueueItem.last.order).to eq(logged_in_user.queue_items.size)
+      end
+      it "doesn't add the video to the queue if it is already in the queue" do
+        Fabricate(:queue_item, user: logged_in_user, video: video)
+        post :create, video_id: video.id
+        expect(QueueItem.where(user_id: logged_in_user.id, video_id: video.id).size).to eq(1)
+      end
+      it "redirects to my_queue" do
+        post :create, video_id: video.id
+        expect(response).to redirect_to(:my_queue)
+      end
+    end
+    it "redirects to login if there is no current user" do
+      post :create
+      expect(response).to redirect_to(:login)
+    end
+  end
 end
