@@ -1,5 +1,6 @@
 class Category < ActiveRecord::Base
   has_many :videos, -> {order("title")} # sets a default order
+  validates_presence_of :label
 
   def recent_videos
     Video.where(category: self).order("created_at DESC").limit(6)
