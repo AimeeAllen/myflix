@@ -35,7 +35,7 @@ describe VideosController  do
         # overkill to have multiple videos here as this was already tested in model
         futurama = Fabricate(:video, title: "Futurama")
         get :search, search_term: "futur"
-        expect(assigns(:videos)).to match_array([futurama])
+        expect(assigns(:videos)).to include(futurama)
       end
     end
     context "with unauthenticated users" do

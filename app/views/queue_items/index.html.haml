@@ -37,7 +37,7 @@
                   %td
                     = link_to item.category_name, item.category
                   %td
-                    = link_to "", method: :post do
+                    = link_to queue_item_path(id: item.id), method: :delete do
                       %i.glyphicon.glyphicon-remove
             - else
               %tr

@@ -14,4 +14,9 @@ class QueueItem < ActiveRecord::Base
     review = Review.find_by(video: video, user: user)
     review ? review.rating : 0
   end
+
+  def delete!
+    self.deleted = true
+    save
+  end
 end

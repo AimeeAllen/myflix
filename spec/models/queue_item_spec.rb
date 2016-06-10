@@ -34,4 +34,12 @@ describe QueueItem do
       expect(queue_item.rating).to eq(0)
     end
   end
+
+  describe ".delete!" do
+    it "sets the deleted flag on the object" do
+      queue_item = Fabricate(:queue_item)
+      queue_item.delete!
+      expect(queue_item.deleted).to be true
+    end
+  end
 end
