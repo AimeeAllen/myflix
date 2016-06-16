@@ -5,6 +5,7 @@ describe QueueItem do
   it {should belong_to(:video)}
   it {should validate_presence_of(:user)}
   it {should validate_presence_of(:video)}
+  it {should validate_numericality_of(:order).only_integer}
   #it {should have_one(:category), through: :video}
   describe ".category" do
     it "should display the category of the associated video" do

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do
   it {should have_many(:reviews)}
-  it {should have_many(:queue_items)}
+  it {should have_many(:queue_items).order('"order"')}
   it {should have_many(:videos).through(:queue_items)}
   it "should only associate to non-deleted queue_items" do
     user = Fabricate(:user)

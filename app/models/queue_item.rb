@@ -5,6 +5,7 @@ class QueueItem < ActiveRecord::Base
   delegate :category, to: :video #sends calls to category method to associated video
 
   validates_presence_of :video, :user
+  validates_numericality_of :order, only_integer: true
 
   def category_name
     video.category ? video.category.label : 'No category'
