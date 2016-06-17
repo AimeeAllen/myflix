@@ -9,4 +9,9 @@ class User < ActiveRecord::Base
   # uses bcrypt gem to handle encryption from :password to :password_digest
   has_secure_password validations: false
 
+  def normalise_queue_item_orders
+    queue_items.each_with_index do |queue_item, i|
+      queue_item.update_attributes(order: i+1)
+    end
+  end
 end

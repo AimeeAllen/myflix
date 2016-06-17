@@ -36,6 +36,26 @@ describe QueueItem do
     end
   end
 
+  describe ".rating=" do
+    let(:user) {Fabricate(:user)}
+    let(:video) {Fabricate(:video)}
+    let(:queue_item) {Fabricate(:queue_item, video: video, user: user)}
+    it "updates review rating when one already exists" do
+      review = Fabricate(:review, video: video, user: user, rating: 1)
+      queue_item.rating = 5
+      expect(Review.first.rating).to eq(5)
+    end
+    it "can clear a review rating if one already exists" do
+      review = Fabricate(:review, video: video, user: user, rating: 1)
+      queue_item.rating = ''
+      expect(Review.first.rating).to be_nil
+    end
+    it "creates a new review with the rating when one didn't previously exist" do
+      queue_item.rating = 3
+      expect(Review.first.rating).to eq(3)
+    end
+  end
+
   describe ".delete!" do
     it "sets the deleted flag on the object" do
       queue_item = Fabricate(:queue_item)

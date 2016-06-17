@@ -7,4 +7,8 @@ module ApplicationHelper
       "Rating: #{rating}/5.0"
     end
   end
+
+  def rating_select_options
+    (1..5).to_a.reverse.map {|e| ["#{e} #{'Star'.pluralize(e)}",e]}
+  end
 end

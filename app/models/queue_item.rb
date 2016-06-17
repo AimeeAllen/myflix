@@ -12,12 +12,34 @@ class QueueItem < ActiveRecord::Base
   end
 
   def rating
-    review = Review.find_by(video: video, user: user)
     review ? review.rating : 0
+  end
+
+  def rating=(new_rating)
+    clean_rating = cleanse_rating(new_rating)
+    if review
+      #bypasses validation, works for virtual attributes too
+      review.update_column(:rating, clean_rating) unless review.rating == clean_rating
+    else
+      review = Review.new(video: video, user: user, rating: clean_rating)
+      review.skip_comment_validation = true
+      review.save
+    end
   end
 
   def delete!
     self.deleted = true
     save
+  end
+
+  private
+  def review
+    @review ||= Review.find_by(video: video, user: user)
+  end
+
+  def cleanse_rating(rating)
+    rating = rating.to_i
+    rating = nil if rating==0
+    rating
   end
 end

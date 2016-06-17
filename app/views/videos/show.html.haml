@@ -23,7 +23,7 @@
           .form-group
             .row
               .col-sm-3
-                = f.select :rating, (1..5).to_a.reverse.map {|e| ["#{e} #{'Star'.pluralize(e)}",e]}, label: "Rate this video"
+                = f.select :rating, rating_select_options, label: "Rate this video"
           .form-group
             .row
               .col-sm-8

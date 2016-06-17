@@ -78,9 +78,8 @@ describe Video do
   describe ".average_rating" do
     let(:video) {Fabricate(:video)}
     it "calculates average of all ratings to 1 d.p." do
-      user = Fabricate(:user)
       videos = []
-      45.times {videos.push (Fabricate(:review, video: video, user: user))}
+      45.times {videos.push (Fabricate(:review, video: video))}
       expect(video.average_rating).to eq(((videos.map {|v| v.rating}).reduce(:+).to_f/videos.size).round(1))
     end
     it "returns 0 if there are no ratings" do
@@ -94,23 +93,22 @@ describe Video do
 
   describe ".recent_reviews" do
     let(:video) {Fabricate(:video)}
-    let(:user) {Fabricate(:user)}
     it "returns reviews in an array" do
-      review1 = Fabricate(:review, video: video, user: user)
-      review2 = Fabricate(:review, video: video, user: user)
+      review1 = Fabricate(:review, video: video)
+      review2 = Fabricate(:review, video: video)
       expect(video.recent_reviews).to match_array([review1, review2])
     end
     it "returns an empty array if there are no reviews" do
       expect(video.recent_reviews).to eq([])
     end
     it "has reviews in reverse chronological order" do
-      review1 = Fabricate(:review, video: video, user: user, created_at: 1.day.ago)
-      review2 = Fabricate(:review, video: video, user: user)
+      review1 = Fabricate(:review, video: video, created_at: 1.day.ago)
+      review2 = Fabricate(:review, video: video)
       expect(video.recent_reviews).to eq([review2, review1])
     end
     it "only shows up to 8 reviews" do
       videos = []
-      10.times {videos.push (Fabricate(:review, video: video, user: user))}
+      10.times {videos.push (Fabricate(:review, video: video))}
       expect(video.recent_reviews).to eq(videos.last(8).reverse)
     end
   end

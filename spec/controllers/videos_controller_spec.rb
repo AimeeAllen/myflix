@@ -13,7 +13,7 @@ describe VideosController  do
       end
       it "sets the @reviews variable" do
         reviews = []
-        3.times {reviews.push Fabricate(:review, video: video, user: User.first)}
+        3.times {reviews.push Fabricate(:review, video: video)}
         expect(assigns(:reviews)).to match_array(reviews)
       end
       it "sets the @review variable" do
