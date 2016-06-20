@@ -7,7 +7,7 @@ describe SessionsController do
       expect(response).to render_template(:new)
     end
     it "redirects to home if user already logged in" do
-      session[:user_id] = Fabricate(:user).id
+      log_in_a_user
       get :new
       expect(response).to redirect_to(home_path)
     end
