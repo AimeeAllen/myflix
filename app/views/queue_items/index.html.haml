@@ -4,42 +4,36 @@
       %article
         %header
           %h2 My Queue
-        %table.table
-          %thead
-            %tr
-              %th(width="10%") List Order
-              %th(width="30%") Video Title
-              %th(width="10%") Play
-              %th(width="20%") Rating
-              %th(width="15%") Genre
-              %th(width="15%") Remove
-          %tbody
-            - if @queue_items != []
-              - @queue_items.each do |item|
+        - if @queue_items != []
+          = form_tag 'update_queue' do
+            %table.table
+              %thead
                 %tr
-                  %td
-                    /%input.form-control(type="text" value="1")
-                    = item.order
-                  %td
-                    = link_to item.video.title, item.video
-                  %td
-                    = button_to "Play", nil, class: "btn btn-default"
-                  %td
-                    = item.rating
-                  /
+                  %th(width="10%") List Order
+                  %th(width="30%") Video Title
+                  %th(width="10%") Play
+                  %th(width="20%") Rating
+                  %th(width="15%") Genre
+                  %th(width="15%") Remove
+              %tbody
+                - @queue_items.each do |item| # queue_items: [{id: 2, order: 1}, {id: 23, order: 2}]
+                  %tr
+                    = hidden_field_tag "queue_items[][id]", item.id
                     %td
-                      %select.form-group(name="")
-                        %option(value="5") 5 Stars
-                        %option(value="4") 4 Stars
-                        %option(value="3") 3 Stars
-                        %option(value="2") 2 Stars
-                        %option(value="1") 1 Star
-                  %td
-                    = link_to item.category_name, item.category
-                  %td
-                    = link_to queue_item_path(id: item.id), method: :delete do
-                      %i.glyphicon.glyphicon-remove
-            - else
-              %tr
-                There are no Videos in your Queue!
-        = button_to "Update Instant Queue", nil, class: "btn btn-default"
+                      = text_field_tag "queue_items[][order]", item.order, id: "video_#{item.video.id}_order"
+                    %td
+                      = link_to item.video.title, item.video
+                    %td
+                      = button_to "Play", nil, class: "btn btn-default"
+                    %td
+                      = select_tag("queue_items[][rating]", options_for_select(rating_select_options, item.rating), include_blank: true)
+                    %td
+                      = link_to item.category_name, item.category
+                    %td
+                      = link_to queue_item_path(id: item.id), method: :delete do
+                        %i.glyphicon.glyphicon-remove
+            = submit_tag "Update Instant Queue", class: "btn btn-default"
+        - else
+          %tr
+            There are no Videos in your Queue!
+        

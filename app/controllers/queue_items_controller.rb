@@ -15,9 +15,20 @@ class QueueItemsController < ApplicationController
     queue_item_to_delete = QueueItem.find(params[:id])
     if queue_item_to_delete.user == current_user
       queue_item_to_delete.delete!
-      re_order_later_queue_items(queue_item_to_delete)
+      current_user.normalise_queue_item_orders
     end
     flash[:success] = 'Video has been removed from your queue'
+    redirect_to my_queue_path
+  end
+
+  def update_queue
+    begin
+      update_queue_items
+      current_user.normalise_queue_item_orders
+      flash[:success] = "Your queue has been updated"
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "Please enter only integer List Order numbers"
+    end
     redirect_to my_queue_path
   end
 
@@ -30,11 +41,12 @@ class QueueItemsController < ApplicationController
     !QueueItem.where(user: current_user, video: video, deleted: false).empty?
   end
 
-  def re_order_later_queue_items(queue_item)
-    queue_items_to_correct = QueueItem.where('"order" > ?', queue_item.order)
-    queue_items_to_correct.each do |item|
-      item.order -= 1
-      item.save
-    end    
+  def update_queue_items
+    ActiveRecord::Base.transaction do
+      params[:queue_items].each do |queue_item_data|
+        queue_item = QueueItem.find(queue_item_data[:id])
+        queue_item.update_attributes!(order: queue_item_data[:order], rating: queue_item_data[:rating]) if queue_item.user == current_user
+      end
+    end
   end
 end

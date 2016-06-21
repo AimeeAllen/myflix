@@ -5,7 +5,7 @@ describe VideosController  do
     let (:video) {Fabricate(:video)}
     context "user is authenticated" do
       before do
-        session[:user_id] = Fabricate(:user).id
+        log_in_a_user
         get :show, id: video.id
       end
       it "sets the @video variable" do
@@ -13,7 +13,7 @@ describe VideosController  do
       end
       it "sets the @reviews variable" do
         reviews = []
-        3.times {reviews.push Fabricate(:review, video: video, user: User.first)}
+        3.times {reviews.push Fabricate(:review, video: video)}
         expect(assigns(:reviews)).to match_array(reviews)
       end
       it "sets the @review variable" do
@@ -28,9 +28,7 @@ describe VideosController  do
   end
   describe "GET search" do
     context "with authenticated users" do
-      before do
-        session[:user_id] = Fabricate(:user).id
-      end
+      before {log_in_a_user}
       it "sets the @videos variable" do
         # overkill to have multiple videos here as this was already tested in model
         futurama = Fabricate(:video, title: "Futurama")
@@ -39,9 +37,8 @@ describe VideosController  do
       end
     end
     context "with unauthenticated users" do
-      it "redirects to login page" do
-        get :search, search_term: "anything"
-        expect(response).to redirect_to(login_path)
+      it_behaves_like "no logged in user" do
+        let(:action) {get :search, search_term: "anything"}
       end
     end
   end

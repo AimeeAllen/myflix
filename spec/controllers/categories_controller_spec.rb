@@ -8,9 +8,8 @@ describe CategoriesController do
       get :show, id: category
       expect(assigns(:category)).to eq(category)
     end
-    it "redirects to login if user is not authenticated" do
-      get :show, id: category
-      expect(response).to redirect_to(login_path)
+    it_behaves_like "no logged in user" do
+      let(:action) {get :show, id: category}
     end
   end
 end

@@ -3,21 +3,18 @@ require 'spec_helper'
 describe ReviewsController do
   describe "POST create" do
     context "authenticated user" do
-      let(:user) {Fabricate(:user)}
       let(:video) {Fabricate(:video)}
-      before do
-        session[:user_id] = user.id
-      end
+      before {log_in_a_user}
       context "valid review" do
         before do
           # Note: must use video_id (not just video) to refer to parent object on nested resources
-          post :create, video_id: video, review: Fabricate.attributes_for(:review, user: user, video: video)
+          post :create, video_id: video, review: Fabricate.attributes_for(:review, user: @user, video: video)
         end
         it "has the correct video association" do
           expect(assigns(:review).video).to eq(video)
         end
         it "has the correct user assocation" do
-          expect(assigns(:review).user).to eq(user)
+          expect(assigns(:review).user).to eq(@user)
         end
         it "saves the review" do
           expect(assigns(:review)).not_to be_new_record
@@ -31,7 +28,7 @@ describe ReviewsController do
       end
       context "invalid review" do
         before do
-          post :create, video_id: video.id, review: Fabricate.attributes_for(:review, comment: "", user: user, video: video)
+          post :create, video_id: video.id, review: Fabricate.attributes_for(:review, comment: "", user: @user, video: video)
         end
         it "renders video show" do
           expect(response).to render_template("videos/show")
@@ -44,9 +41,8 @@ describe ReviewsController do
         end
       end
     end
-    it "redirects to home for an unauthenticated user" do
-      post :create, video_id: Fabricate(:video).id, review: Fabricate.attributes_for(:review)
-      expect(response).to redirect_to(login_path)
+    it_behaves_like "no logged in user" do
+      let(:action) {post :create, video_id: Fabricate(:video).id, review: Fabricate.attributes_for(:review)}
     end
   end
 end
