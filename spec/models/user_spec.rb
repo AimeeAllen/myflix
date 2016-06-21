@@ -19,4 +19,16 @@ describe User do
       expect(user.queue_items.map(&:order)).to eq([1,2,3,4])
     end
   end
+
+  describe ".queued_video?(video)" do
+    let(:user) {Fabricate(:user)}
+    let(:video) {Fabricate(:video)}
+    it "returns true if the passed in video belongs to the user's queue" do
+      Fabricate(:queue_item, user: user, video: video)
+      expect(user.queued_video?(video)).to be true
+    end
+    it "returns false if the passed in video doesn't below to the user's queue" do
+      expect(user.queued_video?(video)).to be false
+    end
+  end
 end
